@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
+	"strings"
 )
 
 type Todo struct {
@@ -13,9 +15,7 @@ type Todo struct {
 	Completed bool   `json:"completed"`
 }
 
-func main() {
-	fmt.Println("Learning CRUD...")
-
+func getreq() {
 	res, err := http.Get("https://jsonplaceholder.typicode.com/todos/4")
 	if err != nil {
 		fmt.Println("Error getting:", err)
@@ -36,4 +36,27 @@ func main() {
 	}
 
 	fmt.Println("Todo:", todo)
+}
+func Postreq() {
+	todo := Todo{
+		UserID:    23,
+		Title:     "Prince Kumar",
+		Completed: true,
+	}
+	jsonData, _ := json.Marshal(todo)
+	jsonString := string(jsonData)
+
+	jsonReader := strings.NewReader(jsonString)
+
+	myURL := "https://jsonplaceholder.typicode.com/todos"
+	res, _ := http.Post(myURL, "application/json", jsonReader)
+
+	defer res.Body.Close()
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("Response : ", string(data))
+}
+
+func main() {
+	fmt.Println("Learning CRUD...")
+	Postreq()
 }
