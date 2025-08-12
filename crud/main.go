@@ -55,8 +55,31 @@ func Postreq() {
 	data, _ := ioutil.ReadAll(res.Body)
 	fmt.Println("Response : ", string(data))
 }
+func performUpdateRequest() {
+	todo := Todo{
+		UserID:    232,
+		Title:     "Prince Kuwwdadfmar",
+		Completed: true,
+	}
+	jsonData, _ := json.Marshal(todo)
+
+	jsonString := string(jsonData)
+
+	jsonReader := strings.NewReader(jsonString)
+
+	const myurl = "https://jsonplaceholder.typicode.com/todos/1"
+
+	req, _ := http.NewRequest(http.MethodPut, myurl, jsonReader)
+	req.Header.Set("Content-type", "application/json") //always put this for better telling that we are sending json data
+	client := http.Client{}
+	res, _ := client.Do(req)
+	defer res.Body.Close()
+	data, _ := ioutil.ReadAll(res.Body)
+	fmt.Println("Response : ", string(data))
+}
 
 func main() {
 	fmt.Println("Learning CRUD...")
 	Postreq()
+	performUpdateRequest()
 }
