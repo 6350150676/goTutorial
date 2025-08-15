@@ -18,7 +18,7 @@ func main() {
 		wg.Add(1) //increment the waitgroup counter
 		go worker(i, &wg)
 	}
-	//wait for all the workers to finish 
+	//wait for all the workers to finish
 	wg.Wait()
 	fmt.Println("worker task completed ")
 }
